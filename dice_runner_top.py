@@ -8,6 +8,7 @@ from dice_game_functions import *
 from ibm_qc_interface import *
 from llm_interface import query_llm
 from wake_word_listener import passive_listen, active_listen
+from watson_stt import *
 
 
 # ========== OUTPUT METHODS ==========
@@ -97,12 +98,13 @@ def simulate_chatbot_loop(command_queue):
     while True:
         try:
             passive_listen()
-            spoken = active_listen(timeout=5)
+            
+            record_audio("test.wav", duration=5)
+            spoken = transcribe_ibm("test.wav")
 
             if not spoken:
                 print("[INFO] No speech detected.")
                 continue
-
             reply = spoken # query_llm(spoken)
             print("LLM:", reply)
 
@@ -118,7 +120,7 @@ def simulate_chatbot_loop(command_queue):
 
 
 # ========== MAIN ==========
-def main():
+def dice_game_main():
     q = queue.Queue()
     game_thread = threading.Thread(target=start_game_thread, args=(q,))
     game_thread.start()
@@ -127,4 +129,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    dice_game_main()
