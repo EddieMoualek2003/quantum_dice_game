@@ -103,7 +103,7 @@ def simulate_chatbot_loop(command_queue):
                 print("[INFO] No speech detected.")
                 continue
 
-            reply = query_llm(spoken)
+            reply = spoken # query_llm(spoken)
             print("LLM:", reply)
 
             if any(k in reply.lower() for k in ["roll", "dice", "throw"]):
