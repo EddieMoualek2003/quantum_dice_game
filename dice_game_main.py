@@ -6,9 +6,9 @@ from time import sleep
 
 from dice_game_functions import *
 from ibm_qc_interface import *
-from llm_interface import query_llm
-from wake_word_listener import passive_listen, active_listen
-from watson_stt import *
+# from llm_interface import query_llm
+# from wake_word_listener import passive_listen, active_listen
+# from watson_stt import *
 
 
 # ========== OUTPUT METHODS ==========
@@ -97,10 +97,10 @@ def start_game_thread(command_queue):
 def simulate_chatbot_loop(command_queue):
     while True:
         try:
-            passive_listen()
+            # passive_listen()
             
-            record_audio("test.wav", duration=5)
-            spoken = transcribe_ibm("test.wav")
+            # record_audio("test.wav", duration=5)
+            spoken = input("Enter Command (In place of speech for remote detection): ") # transcribe_ibm("test.wav")
 
             if not spoken:
                 print("[INFO] No speech detected.")
@@ -128,5 +128,5 @@ def dice_game_main():
     game_thread.join()
 
 
-# if __name__ == "__main__":
-#     dice_game_main()
+if __name__ == "__main__":
+    dice_game_main()
