@@ -2,12 +2,26 @@
 
 import sys
 import os
+import atexit
+
+GIF_PATH = "resource_folder/schrodinger_dice_wavefunction_collapse.gif"
 
 def is_terminal():
     return sys.stdin.isatty() and sys.stdout.isatty()
 
 def is_gui_available():
     return os.environ.get("DISPLAY", "") != ""
+
+def cleanup():
+    try:
+        if os.path.exists(GIF_PATH):
+            os.remove(GIF_PATH)
+            print(f"[INFO] Deleted temporary file: {GIF_PATH}")
+    except Exception as e:
+        print(f"[WARNING] Failed to delete GIF: {e}")
+
+# Ensure the GIF is always deleted when the program exits
+atexit.register(cleanup)
 
 def main():
     # Command-line override
