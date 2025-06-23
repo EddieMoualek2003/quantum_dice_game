@@ -6,13 +6,11 @@ import atexit
 
 GIF_PATH = "resource_folder/schrodinger_dice_wavefunction_collapse.gif"
 
-def is_terminal():
-    return sys.stdin.isatty() and sys.stdout.isatty()
-
 def is_gui_available():
     return os.environ.get("DISPLAY", "") != ""
 
 def cleanup():
+    """Delete the generated GIF when the program exits."""
     try:
         if os.path.exists(GIF_PATH):
             os.remove(GIF_PATH)
@@ -20,11 +18,11 @@ def cleanup():
     except Exception as e:
         print(f"[WARNING] Failed to delete GIF: {e}")
 
-# Ensure the GIF is always deleted when the program exits
+# Register the cleanup function to run at exit
 atexit.register(cleanup)
 
 def main():
-    # Command-line override
+    # Command-line overrides
     if "--terminal" in sys.argv:
         from display_terminal import run_terminal
         run_terminal()
@@ -34,7 +32,7 @@ def main():
         run_gui()
         return
 
-    # Auto-detection: Prefer GUI
+    # Auto-detect environment
     if is_gui_available():
         try:
             from display_gui import run_gui
@@ -44,12 +42,10 @@ def main():
             print("[INFO] Falling back to terminal mode...")
             from display_terminal import run_terminal
             run_terminal()
-    elif is_terminal():
-        print("[INFO] No GUI detected. Running in terminal mode.")
+    else:
+        print("[INFO] No GUI detected. Defaulting to terminal mode.")
         from display_terminal import run_terminal
         run_terminal()
-    else:
-        print("[ERROR] No GUI or terminal detected. Headless mode not supported.")
 
 if __name__ == "__main__":
     main()
