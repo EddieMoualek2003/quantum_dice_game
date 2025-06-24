@@ -1,8 +1,15 @@
 # display_terminal.py
-from engine import dice_game_main
+
+from engine import run_quantum_dice_once
 
 def run_terminal():
-    counts = dice_game_main()
+    print("\n[INFO] Terminal mode activated.")
+    print("Rolling the quantum dice...\n")
+
+    counts = run_quantum_dice_once()
+
     print("Quantum Dice Measurement Counts:")
-    for bitstring, count in counts.items():
-        print(f"  |{bitstring}>: {count}")
+    for key, value in counts.items():
+        print(f"{key}: {value}")
+
+    print("\n[INFO] Game finished.")
